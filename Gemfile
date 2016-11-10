@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
@@ -48,3 +49,11 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faraday', '~> 0.9.2'
 gem 'rest-client', '~> 1.8'
+gem 'resque', require: 'resque/server'
+gem 'sinatra', github: 'sinatra'
+gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
+gem 'bson_ext'
+gem 'mailgunner'
+gem 'figaro'
+gem 'sidekiq'
+gem 'braintree', '~> 2.61', '>= 2.61.1'

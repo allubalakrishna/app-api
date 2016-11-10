@@ -5,6 +5,11 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
+    # 5.times do |v|
+    #   PostMailer.create_post.deliver_now
+    # end
+    ItemDeleteJob.perform_later
+    # Resque.enqueue(Sleeper)
   end
 
   # GET /posts/1
@@ -24,9 +29,15 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    post = { name: params[:post][:name], publish: params[:post][:publish] }
-    byebug
-    response = Faraday.post 'http://localhost:3000/api/v1/posts.json', {post: post}, {}
+    # post = { name: params[:post][:name], publish: params[:post][:publish] }
+    # byebug
+    # response = Faraday.post 'http://localhost:3000/api/v1/posts.json', {post: post}, {}
+    @post = Post.new(post_params)
+    if @post.save
+      render json: @post, status: :created
+    else
+      render json: @post.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /posts/1
@@ -60,4 +71,8 @@ class PostsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:name, :publish)
+    end
+
 end

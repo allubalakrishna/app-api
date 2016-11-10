@@ -18,7 +18,7 @@ Rails.application.configure do
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+        'Cache-Control' => 'public, max-age=172800'
     }
   else
     config.action_controller.perform_caching = false
@@ -27,7 +27,7 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -51,4 +51,36 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  ActionMailer::Base.smtp_settings = {
+      :domain => 'localhost:3000',
+      :address => 'smtp.gmail.com',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true,
+      :user_name => ENV["GMAIL_USERNAME"],
+      :password => ENV["GMAIL_PASSWORD"]
+  }
+
+  # ActionMailer::Base.delivery_method = :smtp
+  #
+  # ActionMailer::Base.smtp_settings = {
+  #     :port           => 587,
+  #     :address        => 'smtp.mailgun.org',
+  #     :user_name      => 'postmaster@sandbox53a46ff275fe4879976b6483967002ca.mailgun.org',
+  #     :password       => '749684ae5e7f0e7f56d486e3eddfa62b',
+  #     :domain         => 'localhost:3000',
+  #     :authentication => :plain,
+  # }
+  #
+  # config.action_mailer.delivery_method = :mailgun
+  # config.action_mailer.mailgun_settings = {
+  #     api_key: 'key-023e1a747f8b9c2a2eabb664aa448374',
+  #     domain: 'https://api.mailgun.com/v3/playlis.tt/messages'
+  # }
+
+  Braintree::Configuration.environment = :sandbox
+  Braintree::Configuration.merchant_id = "5fr7zqqh6m6md5cd"
+  Braintree::Configuration.public_key = "h3gcktd84hqpkqv6"
+  Braintree::Configuration.private_key = "fef7879d4e8e2244d5c6ea036c864443"
 end
